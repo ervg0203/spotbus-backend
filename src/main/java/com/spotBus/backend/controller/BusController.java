@@ -1,23 +1,23 @@
 package com.spotBus.backend.controller;
 
+import com.spotBus.backend.dto.BusRequestDTO;
 import com.spotBus.backend.entity.Bus;
-import com.spotBus.backend.repository.BusRepository;
-import lombok.extern.slf4j.Slf4j;
+import com.spotBus.backend.service.BusService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
 @RestController
-@RequestMapping("/buses")
+@RequestMapping("/api/v1/buses")
 public class BusController {
 
-    private final BusRepository busRepository;
+    private final BusService busService;
 
-    public BusController(BusRepository busRepository) {
-        this.busRepository = busRepository;
+    public BusController(BusService busService) {
+        this.busService = busService;
     }
 
     @PostMapping("/upload")
-    public Bus createBus(@RequestBody Bus bus) {
-        return busRepository.save(bus);
+    public Bus createBus(@Valid @RequestBody BusRequestDTO dto) {
+        return busService.createBus(dto);
     }
 }
