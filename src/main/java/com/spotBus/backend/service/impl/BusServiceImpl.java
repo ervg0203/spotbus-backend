@@ -2,9 +2,12 @@ package com.spotBus.backend.service.impl;
 
 import com.spotBus.backend.dto.BusRequestDTO;
 import com.spotBus.backend.entity.Bus;
+import com.spotBus.backend.exception.BusNotFoundException;
 import com.spotBus.backend.repository.BusRepository;
 import com.spotBus.backend.service.BusService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class BusServiceImpl implements BusService {
@@ -24,5 +27,19 @@ public class BusServiceImpl implements BusService {
         bus.setRouteName(dto.getRouteName());
 
         return busRepository.save(bus);
+    }
+
+    @Override
+    public List<Bus> getAllBuses() {
+        return busRepository.findAll();
+    }
+
+    @Override
+    public Bus getBusById(Long id) {
+
+        return busRepository.findById(id)
+                .orElseThrow(() ->
+                        new BusNotFoundException(
+                                "Bus not found with id: " + id));
     }
 }

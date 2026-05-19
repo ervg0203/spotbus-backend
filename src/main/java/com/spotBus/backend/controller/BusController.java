@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/buses")
 public class BusController {
@@ -19,7 +21,7 @@ public class BusController {
         this.busService = busService;
     }
 
-    @PostMapping("/upload")
+    @PostMapping
     public ResponseEntity<ApiResponse<Bus>> createBus(@Valid @RequestBody BusRequestDTO dto) {
         Bus savedBus = busService.createBus(dto);
 
@@ -29,5 +31,34 @@ public class BusController {
                         savedBus);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<Bus>>> getAllBuses() {
+
+        List<Bus> buses = busService.getAllBuses();
+
+        ApiResponse<List<Bus>> response =
+                new ApiResponse<>(
+                        true,
+                        "Buses fetched successfully",
+                        buses);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<Bus>> getBusById(
+            @PathVariable Long id) {
+
+        Bus bus = busService.getBusById(id);
+
+        ApiResponse<Bus> response =
+                new ApiResponse<>(
+                        true,
+                        "Bus fetched successfully",
+                        bus);
+
+        return ResponseEntity.ok(response);
     }
 }

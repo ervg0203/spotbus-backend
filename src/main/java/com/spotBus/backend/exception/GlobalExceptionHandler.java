@@ -29,4 +29,19 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response,
                 HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(BusNotFoundException.class)
+    public ResponseEntity<ApiResponse<Object>> handleBusNotFoundException(
+            BusNotFoundException ex) {
+
+        ApiResponse<Object> response =
+                new ApiResponse<>(
+                        false,
+                        ex.getMessage(),
+                        null);
+
+        return new ResponseEntity<>(
+                response,
+                HttpStatus.NOT_FOUND);
+    }
 }
