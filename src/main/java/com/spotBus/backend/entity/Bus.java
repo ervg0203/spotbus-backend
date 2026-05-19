@@ -1,5 +1,6 @@
 package com.spotBus.backend.entity;
 
+import com.spotBus.backend.common.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class Bus {
+public class Bus extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

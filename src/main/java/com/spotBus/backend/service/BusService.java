@@ -12,4 +12,8 @@ public interface BusService {
     List<Bus> getAllBuses();
 
     Bus getBusById(Long id);
+
+    Bus updateBus(Long id, BusRequestDTO dto);
+
+    void deleteBus(Long id);
 }

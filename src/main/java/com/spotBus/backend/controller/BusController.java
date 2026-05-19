@@ -61,4 +61,35 @@ public class BusController {
 
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<Bus>> updateBus(
+            @PathVariable Long id,
+            @Valid @RequestBody BusRequestDTO dto) {
+
+        Bus updatedBus = busService.updateBus(id, dto);
+
+        ApiResponse<Bus> response =
+                new ApiResponse<>(
+                        true,
+                        "Bus updated successfully",
+                        updatedBus);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Object>> deleteBus(
+            @PathVariable Long id) {
+
+        busService.deleteBus(id);
+
+        ApiResponse<Object> response =
+                new ApiResponse<>(
+                        true,
+                        "Bus deleted successfully",
+                        null);
+
+        return ResponseEntity.ok(response);
+    }
 }
