@@ -5,18 +5,21 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
-public class Bus extends BaseEntity {
+public class Route extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String busNumber;
+    private String source;
 
-    @ManyToOne
-    @JoinColumn(name = "route_id")
-    private Route route;
+    private String destination;
+
+    @OneToMany(mappedBy = "route")
+    private List<Bus> buses;
 }
