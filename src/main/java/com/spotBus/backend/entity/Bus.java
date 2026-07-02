@@ -16,7 +16,7 @@ public class Bus extends BaseEntity {
 
     private String busNumber;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "route_id")
     private Route route;
 }

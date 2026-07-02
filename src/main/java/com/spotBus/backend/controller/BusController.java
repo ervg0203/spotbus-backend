@@ -1,6 +1,7 @@
 package com.spotBus.backend.controller;
 
 import com.spotBus.backend.dto.BusRequestDTO;
+import com.spotBus.backend.dto.BusResponseDTO;
 import com.spotBus.backend.entity.Bus;
 import com.spotBus.backend.response.ApiResponse;
 import com.spotBus.backend.service.BusService;
@@ -48,16 +49,24 @@ public class BusController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Bus>> getBusById(
+    public ResponseEntity<ApiResponse<BusResponseDTO>> getBusById(
             @PathVariable Long id) {
 
         Bus bus = busService.getBusById(id);
 
-        ApiResponse<Bus> response =
+        BusResponseDTO busDto = new BusResponseDTO(
+                bus.getId(),
+                bus.getBusNumber(),
+                bus.getRoute().getId(),
+                bus.getRoute().getSource(),
+                bus.getRoute().getDestination()
+        );
+
+        ApiResponse<BusResponseDTO> response =
                 new ApiResponse<>(
                         true,
                         "Bus fetched successfully",
-                        bus);
+                        busDto);
 
         return ResponseEntity.ok(response);
     }
