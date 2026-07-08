@@ -1,6 +1,6 @@
 package com.spotBus.backend.exception;
 
-import com.spotBus.backend.response.ApiResponse;
+import com.spotBus.backend.response.ApiResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,7 +13,7 @@ import java.util.Objects;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiResponse<Object>> handleValidationException(
+    public ResponseEntity<ApiResponseDTO<Object>> handleValidationException(
             MethodArgumentNotValidException ex) {
 
         String errorMessage =
@@ -21,8 +21,8 @@ public class GlobalExceptionHandler {
                                 .getFieldError())
                         .getDefaultMessage();
 
-        ApiResponse<Object> response =
-                new ApiResponse<>(false,
+        ApiResponseDTO<Object> response =
+                new ApiResponseDTO<>(false,
                         errorMessage,
                         null);
 
@@ -31,11 +31,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BusNotFoundException.class)
-    public ResponseEntity<ApiResponse<Object>> handleBusNotFoundException(
+    public ResponseEntity<ApiResponseDTO<Object>> handleBusNotFoundException(
             BusNotFoundException ex) {
 
-        ApiResponse<Object> response =
-                new ApiResponse<>(
+        ApiResponseDTO<Object> response =
+                new ApiResponseDTO<>(
                         false,
                         ex.getMessage(),
                         null);
@@ -43,5 +43,25 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(
                 response,
                 HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ApiResponseDTO<Object>> handleEmailAlreadyExistsException(
+            EmailAlreadyExistsException ex) {
+
+        ApiResponseDTO<Object> response =
+                new ApiResponseDTO<>(false, ex.getMessage(), null);
+
+        return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ApiResponseDTO<Object>> handleInvalidCredentialsException(
+            InvalidCredentialsException ex) {
+
+        ApiResponseDTO<Object> response =
+                new ApiResponseDTO<>(false, ex.getMessage(), null);
+
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 }

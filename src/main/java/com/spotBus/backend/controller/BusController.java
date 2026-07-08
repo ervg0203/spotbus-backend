@@ -1,9 +1,9 @@
 package com.spotBus.backend.controller;
 
 import com.spotBus.backend.dto.BusRequestDTO;
-import com.spotBus.backend.dto.BusResponseDTO;
+import com.spotBus.backend.response.BusResponseDTO;
 import com.spotBus.backend.entity.Bus;
-import com.spotBus.backend.response.ApiResponse;
+import com.spotBus.backend.response.ApiResponseDTO;
 import com.spotBus.backend.service.BusService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -23,11 +23,11 @@ public class BusController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Bus>> createBus(@Valid @RequestBody BusRequestDTO dto) {
+    public ResponseEntity<ApiResponseDTO<Bus>> createBus(@Valid @RequestBody BusRequestDTO dto) {
         Bus savedBus = busService.createBus(dto);
 
-        ApiResponse<Bus> response =
-                new ApiResponse<>(true,
+        ApiResponseDTO<Bus> response =
+                new ApiResponseDTO<>(true,
                         "Bus created successfully",
                         savedBus);
 
@@ -35,12 +35,12 @@ public class BusController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<Bus>>> getAllBuses() {
+    public ResponseEntity<ApiResponseDTO<List<Bus>>> getAllBuses() {
 
         List<Bus> buses = busService.getAllBuses();
 
-        ApiResponse<List<Bus>> response =
-                new ApiResponse<>(
+        ApiResponseDTO<List<Bus>> response =
+                new ApiResponseDTO<>(
                         true,
                         "Buses fetched successfully",
                         buses);
@@ -49,7 +49,7 @@ public class BusController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<BusResponseDTO>> getBusById(
+    public ResponseEntity<ApiResponseDTO<BusResponseDTO>> getBusById(
             @PathVariable Long id) {
 
         Bus bus = busService.getBusById(id);
@@ -62,8 +62,8 @@ public class BusController {
                 bus.getRoute().getDestination()
         );
 
-        ApiResponse<BusResponseDTO> response =
-                new ApiResponse<>(
+        ApiResponseDTO<BusResponseDTO> response =
+                new ApiResponseDTO<>(
                         true,
                         "Bus fetched successfully",
                         busDto);
@@ -72,14 +72,14 @@ public class BusController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Bus>> updateBus(
+    public ResponseEntity<ApiResponseDTO<Bus>> updateBus(
             @PathVariable Long id,
             @Valid @RequestBody BusRequestDTO dto) {
 
         Bus updatedBus = busService.updateBus(id, dto);
 
-        ApiResponse<Bus> response =
-                new ApiResponse<>(
+        ApiResponseDTO<Bus> response =
+                new ApiResponseDTO<>(
                         true,
                         "Bus updated successfully",
                         updatedBus);
@@ -88,13 +88,13 @@ public class BusController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<Object>> deleteBus(
+    public ResponseEntity<ApiResponseDTO<Object>> deleteBus(
             @PathVariable Long id) {
 
         busService.deleteBus(id);
 
-        ApiResponse<Object> response =
-                new ApiResponse<>(
+        ApiResponseDTO<Object> response =
+                new ApiResponseDTO<>(
                         true,
                         "Bus deleted successfully",
                         null);

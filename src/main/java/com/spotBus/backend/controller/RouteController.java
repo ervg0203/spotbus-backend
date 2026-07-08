@@ -2,7 +2,7 @@ package com.spotBus.backend.controller;
 
 import com.spotBus.backend.dto.RouteRequestDTO;
 import com.spotBus.backend.entity.Route;
-import com.spotBus.backend.response.ApiResponse;
+import com.spotBus.backend.response.ApiResponseDTO;
 import com.spotBus.backend.service.RouteService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -20,13 +20,13 @@ public class RouteController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Route>> createRoute(
+    public ResponseEntity<ApiResponseDTO<Route>> createRoute(
             @Valid @RequestBody RouteRequestDTO dto) {
 
         Route savedRoute = routeService.createRoute(dto);
 
-        ApiResponse<Route> response =
-                new ApiResponse<>(
+        ApiResponseDTO<Route> response =
+                new ApiResponseDTO<>(
                         true,
                         "Route created successfully",
                         savedRoute);

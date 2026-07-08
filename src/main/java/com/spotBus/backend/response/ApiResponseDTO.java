@@ -4,7 +4,7 @@ import lombok.*;
 
 @Getter
 @AllArgsConstructor
-public class ApiResponse<T> {
+public class ApiResponseDTO<T> {
 
     private boolean success;
     private String message;

@@ -1,5 +1,6 @@
 package com.spotBus.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spotBus.backend.common.BaseEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -31,6 +32,7 @@ public class PassengerEntity extends BaseEntity {
     private String phone;
 
     @NotNull
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 

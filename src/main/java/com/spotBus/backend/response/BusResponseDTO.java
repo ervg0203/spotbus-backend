@@ -1,4 +1,4 @@
-package com.spotBus.backend.dto;
+package com.spotBus.backend.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
