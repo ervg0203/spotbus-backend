@@ -54,7 +54,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         jwtService.validateToken(token);
 
         RefreshTokenEntity storedToken = refreshTokenRepository.findByTokenAndRevokedFalse(token)
-                .orElseThrow(() -> new InvalidTokenException("Refresh token not found"));
+                .orElseThrow(() -> new InvalidTokenException("Invalid refresh token"));
 
         if (storedToken.getExpiresAt().isBefore(LocalDateTime.now())) {
             throw new ExpiredTokenException("Refresh token has expired");
