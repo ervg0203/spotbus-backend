@@ -84,4 +84,14 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(UnsupportedUserTypeException.class)
+    public ResponseEntity<ApiResponseDTO<Object>> handleUnsupportedUserTypeException(
+            UnsupportedUserTypeException ex) {
+
+        ApiResponseDTO<Object> response =
+                new ApiResponseDTO<>(false, ex.getMessage(), null);
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 }

@@ -1,5 +1,6 @@
 package com.spotBus.backend.dto;
 
+import com.spotBus.backend.security.UserType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -29,4 +30,6 @@ public class RegisterRequestDTO {
     @NotBlank
     @Size(min = 8, message = "Password must be at least 8 characters long")
     private String password;
+
+    private UserType userType;
 }

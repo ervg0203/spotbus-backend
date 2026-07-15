@@ -1,5 +1,6 @@
 package com.spotBus.backend.dto;
 
+import com.spotBus.backend.security.UserType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -19,4 +20,6 @@ public class LoginRequestDTO {
 
     @NotBlank
     private String password;
+
+    private UserType userType;
 }

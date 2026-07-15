@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
 @Component
-public class PassengerAuthenticationProvider {
+public class PassengerAuthenticationProvider implements UserAuthenticationProvider {
 
     private final PassengerRepository passengerRepository;
     private final PasswordEncoder passwordEncoder;
@@ -32,6 +32,12 @@ public class PassengerAuthenticationProvider {
         this.refreshTokenService = refreshTokenService;
     }
 
+    @Override
+    public UserType getUserType() {
+        return UserType.PASSENGER;
+    }
+
+    @Override
     public AuthenticationResponseDTO register(RegisterRequestDTO dto) {
         if (passengerRepository.existsByEmail(dto.getEmail())) {
             throw new EmailAlreadyExistsException("Email is already registered");
@@ -50,6 +56,7 @@ public class PassengerAuthenticationProvider {
         return buildAuthenticationResponse(savedPassenger);
     }
 
+    @Override
     public AuthenticationResponseDTO login(LoginRequestDTO dto) {
         PassengerEntity passenger = passengerRepository.findByEmail(dto.getEmail())
                 .orElseThrow(() -> new InvalidCredentialsException("Invalid email or password"));

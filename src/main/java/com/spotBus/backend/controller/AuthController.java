@@ -6,7 +6,7 @@ import com.spotBus.backend.dto.RefreshTokenRequestDTO;
 import com.spotBus.backend.dto.RegisterRequestDTO;
 import com.spotBus.backend.response.ApiResponseDTO;
 import com.spotBus.backend.response.RefreshTokenResponseDTO;
-import com.spotBus.backend.service.AuthService;
+import com.spotBus.backend.service.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,17 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
-    private final AuthService authService;
+    private final AuthenticationService authenticationService;
 
-    public AuthController(AuthService authService) {
-        this.authService = authService;
+    public AuthController(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
     }
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponseDTO<AuthenticationResponseDTO>> register(
             @Valid @RequestBody RegisterRequestDTO dto) {
 
-        AuthenticationResponseDTO authResponse = authService.register(dto);
+        AuthenticationResponseDTO authResponse = authenticationService.register(dto);
 
         ApiResponseDTO<AuthenticationResponseDTO> response =
                 new ApiResponseDTO<>(true, "Registration successful", authResponse);
@@ -41,7 +41,7 @@ public class AuthController {
     public ResponseEntity<ApiResponseDTO<AuthenticationResponseDTO>> login(
             @Valid @RequestBody LoginRequestDTO dto) {
 
-        AuthenticationResponseDTO authResponse = authService.login(dto);
+        AuthenticationResponseDTO authResponse = authenticationService.login(dto);
 
         ApiResponseDTO<AuthenticationResponseDTO> response =
                 new ApiResponseDTO<>(true, "Login successful", authResponse);
@@ -53,7 +53,7 @@ public class AuthController {
     public ResponseEntity<ApiResponseDTO<RefreshTokenResponseDTO>> refresh(
             @Valid @RequestBody RefreshTokenRequestDTO dto) {
 
-        RefreshTokenResponseDTO refreshResponse = authService.refreshToken(dto);
+        RefreshTokenResponseDTO refreshResponse = authenticationService.refreshToken(dto);
 
         ApiResponseDTO<RefreshTokenResponseDTO> response =
                 new ApiResponseDTO<>(true, "Token refreshed successfully", refreshResponse);
