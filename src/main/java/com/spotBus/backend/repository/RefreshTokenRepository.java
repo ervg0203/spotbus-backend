@@ -9,5 +9,6 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshTokenEntity
 
     Optional<RefreshTokenEntity> findByTokenAndRevokedFalse(String token);
 
-    void deleteByPassengerId(Long passengerId);
+    // Delete refresh tokens for a specific user id + user type
+    void deleteByUserIdAndUserType(Long userId, com.spotBus.backend.security.UserType userType);
 }

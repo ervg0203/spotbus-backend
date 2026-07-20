@@ -1,10 +1,10 @@
 package com.spotBus.backend.service.impl;
 
-import com.spotBus.backend.entity.PassengerEntity;
 import com.spotBus.backend.entity.RefreshTokenEntity;
 import com.spotBus.backend.exception.ExpiredTokenException;
 import com.spotBus.backend.exception.InvalidTokenException;
 import com.spotBus.backend.repository.RefreshTokenRepository;
+import com.spotBus.backend.security.UserType;
 import com.spotBus.backend.service.JwtService;
 import com.spotBus.backend.service.RefreshTokenService;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,14 +31,16 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     @Override
-    public String createAndPersistRefreshToken(PassengerEntity passenger) {
-        refreshTokenRepository.deleteByPassengerId(passenger.getId());
+    public String createAndPersistRefreshToken(Long userId, String email, UserType userType) {
+        // remove any existing refresh tokens for this user/type
+        refreshTokenRepository.deleteByUserIdAndUserType(userId, userType);
 
-        String token = jwtService.generateRefreshToken(passenger.getId(), passenger.getEmail());
+        String token = jwtService.generateRefreshToken(userId, email);
 
         RefreshTokenEntity refreshToken = new RefreshTokenEntity();
         refreshToken.setToken(token);
-        refreshToken.setPassenger(passenger);
+        refreshToken.setUserId(userId);
+        refreshToken.setUserType(userType);
         refreshToken.setExpiresAt(LocalDateTime.now().plus(Duration.ofMillis(refreshTokenExpiration)));
         refreshToken.setRevoked(false);
         refreshToken.setCreatedAt(LocalDateTime.now());

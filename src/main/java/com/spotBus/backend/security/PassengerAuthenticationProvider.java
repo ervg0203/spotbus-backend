@@ -9,6 +9,7 @@ import com.spotBus.backend.repository.PassengerRepository;
 import com.spotBus.backend.response.AuthenticationResponseDTO;
 import com.spotBus.backend.service.JwtService;
 import com.spotBus.backend.service.RefreshTokenService;
+import com.spotBus.backend.security.UserType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -77,7 +78,7 @@ public class PassengerAuthenticationProvider implements UserAuthenticationProvid
     }
 
     public String generateRefreshToken(PassengerEntity passenger) {
-        return refreshTokenService.createAndPersistRefreshToken(passenger);
+        return refreshTokenService.createAndPersistRefreshToken(passenger.getId(), passenger.getEmail(), UserType.PASSENGER);
     }
 
     private AuthenticationResponseDTO buildAuthenticationResponse(PassengerEntity passenger) {
