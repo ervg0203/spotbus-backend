@@ -73,7 +73,7 @@ public class ConductorAuthenticationProvider implements UserAuthenticationProvid
     }
 
     public String generateAccessToken(ConductorEntity conductorEntity) {
-        return jwtService.generateAccessToken(conductorEntity.getId(), conductorEntity.getEmail());
+        return jwtService.generateAccessToken(conductorEntity.getId(), conductorEntity.getEmail(), UserType.CONDUCTOR);
     }
 
     public String generateRefreshToken(ConductorEntity conductorEntity) {

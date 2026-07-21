@@ -2,6 +2,7 @@ package com.spotBus.backend.service.impl;
 
 import com.spotBus.backend.exception.ExpiredTokenException;
 import com.spotBus.backend.exception.InvalidTokenException;
+import com.spotBus.backend.security.UserType;
 import com.spotBus.backend.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -19,6 +20,7 @@ import java.util.Date;
 public class JwtServiceImpl implements JwtService {
 
     private static final String USER_ID_CLAIM = "userId";
+    private static final String USER_TYPE_CLAIM = "userType";
 
     private final SecretKey signingKey;
     private final long accessTokenExpiration;
@@ -34,13 +36,13 @@ public class JwtServiceImpl implements JwtService {
     }
 
     @Override
-    public String generateAccessToken(Long userId, String email) {
-        return buildToken(userId, email, accessTokenExpiration);
+    public String generateAccessToken(Long userId, String email, UserType userType) {
+        return buildToken(userId, email, userType, accessTokenExpiration);
     }
 
     @Override
     public String generateRefreshToken(Long userId, String email) {
-        return buildToken(userId, email, refreshTokenExpiration);
+        return buildToken(userId, email, null, refreshTokenExpiration);
     }
 
     @Override
@@ -82,16 +84,29 @@ public class JwtServiceImpl implements JwtService {
         return extractClaims(token).get(USER_ID_CLAIM, Long.class);
     }
 
-    private String buildToken(Long userId, String email, long expiration) {
+    @Override
+    public UserType extractUserType(String token) {
+        String userType = extractClaims(token).get(USER_TYPE_CLAIM, String.class);
+        if (userType == null) {
+            throw new InvalidTokenException("JWT is missing user type");
+        }
+        return UserType.valueOf(userType);
+    }
+
+    private String buildToken(Long userId, String email, UserType userType, long expiration) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + expiration);
 
-        return Jwts.builder()
+        var builder = Jwts.builder()
                 .subject(email)
                 .claim(USER_ID_CLAIM, userId)
                 .issuedAt(now)
-                .expiration(expiry)
-                .signWith(signingKey)
-                .compact();
+                .expiration(expiry);
+
+        if (userType != null) {
+            builder.claim(USER_TYPE_CLAIM, userType.name());
+        }
+
+        return builder.signWith(signingKey).compact();
     }
 }

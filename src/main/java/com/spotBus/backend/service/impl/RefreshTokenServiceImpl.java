@@ -67,9 +67,12 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     public String refreshAccessToken(String refreshToken) {
         validateRefreshToken(refreshToken);
 
+        RefreshTokenEntity storedToken = refreshTokenRepository.findByTokenAndRevokedFalse(refreshToken)
+                .orElseThrow(() -> new InvalidTokenException("Invalid refresh token"));
+
         Long userId = jwtService.extractUserId(refreshToken);
         String email = jwtService.extractEmail(refreshToken);
 
-        return jwtService.generateAccessToken(userId, email);
+        return jwtService.generateAccessToken(userId, email, storedToken.getUserType());
     }
 }

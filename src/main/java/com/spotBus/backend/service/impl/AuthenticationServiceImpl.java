@@ -7,6 +7,7 @@ import com.spotBus.backend.response.AuthenticationResponseDTO;
 import com.spotBus.backend.response.RefreshTokenResponseDTO;
 import com.spotBus.backend.security.AuthenticationProviderRegistry;
 import com.spotBus.backend.security.UserType;
+import com.spotBus.backend.exception.UnsupportedUserTypeException;
 import com.spotBus.backend.service.AuthenticationService;
 import com.spotBus.backend.service.RefreshTokenService;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public AuthenticationResponseDTO register(RegisterRequestDTO dto) {
         UserType userType = resolveUserType(dto.getUserType());
+        if (userType != UserType.PASSENGER) {
+            throw new UnsupportedUserTypeException("Only passenger self-registration is allowed");
+        }
         return providerRegistry.getProvider(userType).register(dto);
     }
 

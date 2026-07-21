@@ -73,7 +73,7 @@ public class DriverAuthenticationProvider implements UserAuthenticationProvider 
     }
 
     public String generateAccessToken(DriverEntity driverEntity) {
-        return jwtService.generateAccessToken(driverEntity.getId(), driverEntity.getEmail());
+        return jwtService.generateAccessToken(driverEntity.getId(), driverEntity.getEmail(), UserType.DRIVER);
     }
 
     public String generateRefreshToken(DriverEntity driverEntity) {

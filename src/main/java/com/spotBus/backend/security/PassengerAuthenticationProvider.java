@@ -74,7 +74,7 @@ public class PassengerAuthenticationProvider implements UserAuthenticationProvid
     }
 
     public String generateAccessToken(PassengerEntity passenger) {
-        return jwtService.generateAccessToken(passenger.getId(), passenger.getEmail());
+        return jwtService.generateAccessToken(passenger.getId(), passenger.getEmail(), UserType.PASSENGER);
     }
 
     public String generateRefreshToken(PassengerEntity passenger) {

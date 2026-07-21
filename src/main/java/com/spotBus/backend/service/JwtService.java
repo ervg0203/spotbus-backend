@@ -1,10 +1,11 @@
 package com.spotBus.backend.service;
 
+import com.spotBus.backend.security.UserType;
 import io.jsonwebtoken.Claims;
 
 public interface JwtService {
 
-    String generateAccessToken(Long userId, String email);
+    String generateAccessToken(Long userId, String email, UserType userType);
 
     String generateRefreshToken(Long userId, String email);
 
@@ -17,4 +18,6 @@ public interface JwtService {
     String extractEmail(String token);
 
     Long extractUserId(String token);
+
+    UserType extractUserType(String token);
 }
